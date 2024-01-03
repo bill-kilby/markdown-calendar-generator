@@ -119,7 +119,7 @@ def create_day_file(month: int, day: int, path: str) -> None:
     # Open (or create) the file.
     day_file = open((path+"/"+day_name+".md"), "w+")
     # Add title
-    day_file.write(day_name)
+    day_file.write(day_name+"\n")
     # Add contents of template, then close.
     day_file.writelines(day_template)
     day_file.close()
