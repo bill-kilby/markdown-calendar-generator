@@ -61,7 +61,7 @@ def create_month_file(month: int, month_path: str) -> None:
     month_file = open(
         month_path + "/" + months.get(month)[0] + " Recap.md", "w+"
     )
-    # Open month file, edit the contents.
+    # Open month file, edit the contents, then close.
     month_file.write((months.get(month)[0] + " Recap\n"))
     month_file.writelines(month_template)
     month_file.close()
@@ -86,6 +86,7 @@ def create_days(month: int, month_path: str) -> None:
     # Loop through every day for the month.
     for day in range(1, month_data[1]()+1):
         if (debug_mode): print("\nCreating day")
+        # Generate the day file for the current day.
         create_day_file(month, day, day_path)
 
 
@@ -105,7 +106,7 @@ def create_day_file(month: int, day: int, path: str) -> None:
     :param path: The path to the current day's folder.
     :type path: str
     '''
-    # Open the template and save the contents.
+    # Open the template and save the contents, then close.
     day_template_file = open("./templates/day.txt", "r")
     day_template = day_template_file.readlines()
     day_template_file.close()
@@ -132,15 +133,17 @@ def check_leapyear() -> int:
     :return: The amount of days in this year's February.
     :rtype: int
     '''
+    # Check if the year is a leap year.
     if (year % 100 != 0 or year % 400 == 0):
         if (year % 4 == 0):
+            # If so, return 29.
             if (debug_mode): print(f"{year} is a leap year!")
             return 29
     if (debug_mode): print(f"{year} is not a leap year!")
+    # Else, return 28.
     return 28
 
 
-# Function that creates a directory, but doesnt throw an error message, instead just passes.
 def create_directory(path: str) -> None:
     '''
     Creates a directory in the specified path.
@@ -170,16 +173,13 @@ def parse_command_line_args() -> None:
     global year, debug_mode
     if (len(sys.argv) == 1):
         pass
-    elif (len(sys.argv) == 2):  # Year
+    elif (len(sys.argv) == 3):
+        # Check if integer, set global var if so.
         try:
             year = abs(int(sys.argv[1]))
         except ValueError:
             raise Exception("Command Line Arguments Invalid -> Please see README.md")
-    elif (len(sys.argv) == 3):  # Year, debug_mode
-        try:
-            year = abs(int(sys.argv[1]))
-        except ValueError:
-            raise Exception("Command Line Arguments Invalid -> Please see README.md")
+        # Set global var to True or False dependent on input.
         if (sys.argv[2].upper() == "TRUE"):
             debug_mode = True
         elif (sys.argv[2].upper() == "FALSE"):
